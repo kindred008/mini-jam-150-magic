@@ -9,9 +9,9 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(BoxCollider2D))]
 public class PlayerControl : MonoBehaviour
 {
-    private PlayerInput playerInput;
-    private BoxCollider2D boxCollider2d;
-    private Rigidbody2D playerRb;
+    private PlayerInput _playerInput;
+    private BoxCollider2D _boxCollider2d;
+    private Rigidbody2D _playerRb;
 
     private Vector2 moveInput;
 
@@ -20,15 +20,15 @@ public class PlayerControl : MonoBehaviour
 
     private void Awake()
     {
-        playerInput = GetComponent<PlayerInput>();
-        boxCollider2d = GetComponent<BoxCollider2D>();
-        playerRb = GetComponent<Rigidbody2D>();
+        _playerInput = GetComponent<PlayerInput>();
+        _boxCollider2d = GetComponent<BoxCollider2D>();
+        _playerRb = GetComponent<Rigidbody2D>();
 
-        playerInput.actions["Move"].performed += ctx =>
+        _playerInput.actions["Move"].performed += ctx =>
         {
             moveInput = ctx.ReadValue<Vector2>();
         };
-        playerInput.actions["Move"].canceled += ctx =>
+        _playerInput.actions["Move"].canceled += ctx =>
         {
             moveInput = ctx.ReadValue<Vector2>();
         };
@@ -38,6 +38,6 @@ public class PlayerControl : MonoBehaviour
     {
         var moveValue = moveInput * moveSpeed;
 
-        playerRb.velocity = moveValue;
+        _playerRb.velocity = moveValue;
     }
 }
