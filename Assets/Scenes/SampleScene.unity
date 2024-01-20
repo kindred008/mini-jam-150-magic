@@ -1332,12 +1332,6 @@ MonoBehaviour:
   - {fileID: -1518125234, guid: d3ae1468622dd3d469d7f4f3704dc249, type: 3}
   - {fileID: 1836250575, guid: d3ae1468622dd3d469d7f4f3704dc249, type: 3}
   - {fileID: 624599158, guid: d3ae1468622dd3d469d7f4f3704dc249, type: 3}
-  IngredientQueueFull:
-    m_PersistentCalls:
-      m_Calls: []
-  IngredientHandedIn:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!70 &95286271
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

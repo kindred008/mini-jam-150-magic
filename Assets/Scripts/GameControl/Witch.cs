@@ -15,8 +15,8 @@ public class Witch : MonoBehaviour
     [SerializeField]
     private Sprite[] _witchEmotions;
 
-    public UnityEvent IngredientQueueFull = new UnityEvent();
-    public UnityEvent<IngredientsScriptableObject> IngredientHandedIn = new UnityEvent<IngredientsScriptableObject>();
+    public UnityEvent IngredientQueueFull { get; private set; } = new UnityEvent();
+    public UnityEvent<IngredientsScriptableObject> IngredientHandedIn { get; private set; } = new UnityEvent<IngredientsScriptableObject>();
 
     public List<IngredientsScriptableObject> IngredientList
     {

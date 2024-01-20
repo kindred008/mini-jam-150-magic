@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameController : MonoBehaviour
 {
+    public static UnityEvent GameOver { get; private set; } = new UnityEvent();
+    private bool _gameOver = false;
+
     private Timer _timer;
     private IngredientSpawner _ingredientSpawner;
 
@@ -20,6 +24,7 @@ public class GameController : MonoBehaviour
     [Header("References")]
     [SerializeField] private IngredientsScriptableObject[] _allIngredients;
     [SerializeField] private Witch _witch;
+
     private void Awake()
     {
         _secondsPassed = _secondsForEachRequest - _secondsForFirstRequest;
@@ -53,6 +58,9 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
+        if (_gameOver)
+            return;
+
         _timer.Update(Time.deltaTime);
     }
 
@@ -83,6 +91,9 @@ public class GameController : MonoBehaviour
     {
         Debug.Log("Game over");
         Debug.Log("Score: " + _score);
+
+        _gameOver = true;
+        GameOver.Invoke();
     }
 
     private void HandleIngredientHandedIn(IngredientsScriptableObject ingredient)

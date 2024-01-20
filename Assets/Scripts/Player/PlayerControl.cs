@@ -54,6 +54,16 @@ public class PlayerControl : MonoBehaviour
         };
     }
 
+    private void OnEnable()
+    {
+        GameController.GameOver.AddListener(GameOver);
+    }
+
+    private void OnDisable()
+    {
+        GameController.GameOver.RemoveListener(GameOver);
+    }
+
     private void Update()
     {
         Move();
@@ -111,5 +121,10 @@ public class PlayerControl : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void GameOver()
+    {
+        _playerInput.actions.FindActionMap("Player").Disable();
     }
 }
