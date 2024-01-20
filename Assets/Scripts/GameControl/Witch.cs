@@ -39,7 +39,7 @@ public class Witch : MonoBehaviour
         if (ingredient == _ingredientQueue.Peek())
         {
             IngredientHandedIn.Invoke(_ingredientQueue.Dequeue());
-            Debug.Log("Handed in " + ingredient.name);
+            Debug.Log("Handed in " + ingredient.Name);
             return true;
         } else
         {

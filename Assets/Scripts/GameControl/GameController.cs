@@ -35,6 +35,14 @@ public class GameController : MonoBehaviour
         _witch.IngredientHandedIn.RemoveListener(HandleIngredientHandedIn);
     }
 
+    private void Start()
+    {
+        foreach(IngredientsScriptableObject ingredient in _allIngredients)
+        {
+            _ingredientSpawner.SpawnIngredient(ingredient);
+        }
+    }
+
     private void Update()
     {
         _timer.Update(Time.deltaTime);
@@ -50,10 +58,10 @@ public class GameController : MonoBehaviour
     {
         _secondsPassed++;
 
-        if (_secondsPassed == 5 || _secondsPassed == 10)
+        /*if (_secondsPassed == 5 || _secondsPassed == 10)
         {
             _ingredientSpawner.SpawnIngredient(RandomIngredient());
-        }
+        }*/
 
         if (_secondsPassed >= 10)
         {
@@ -65,6 +73,7 @@ public class GameController : MonoBehaviour
     private void HandleIngredientQueueFull()
     {
         Debug.Log("Game over");
+        Debug.Log("Score: " + _score);
     }
 
     private void HandleIngredientHandedIn(IngredientsScriptableObject ingredient)

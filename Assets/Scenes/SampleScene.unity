@@ -1768,6 +1768,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _allIngredients:
   - {fileID: 11400000, guid: 69bdffd68ae57164a85cab9edce57c23, type: 2}
+  - {fileID: 11400000, guid: f51c49bc425138d45b048ea4a8a74f4d, type: 2}
   _witch: {fileID: 95286270}
 --- !u!4 &1075834830
 Transform:

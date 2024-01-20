@@ -30,7 +30,7 @@ public class Ingredient : MonoBehaviour, IInteractable
 
     private void ChangeSprite()
     {
-        if (_spriteRenderer.sprite != null)
+        if (_ingredientsScriptableObject.Graphic != null)
         {
             _spriteRenderer.sprite = _ingredientsScriptableObject.Graphic;
         }
