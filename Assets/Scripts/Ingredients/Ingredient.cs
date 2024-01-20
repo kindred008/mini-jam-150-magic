@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
-public class Ingredient : MonoBehaviour
+public class Ingredient : MonoBehaviour, IInteractable
 {
     private SpriteRenderer _spriteRenderer;
     private BoxCollider2D _boxCollider;
@@ -19,6 +19,14 @@ public class Ingredient : MonoBehaviour
 
     private void Start()
     {
-        _spriteRenderer.sprite = _ingredientsScriptableObject.Graphic;
+        if (_spriteRenderer.sprite != null)
+        {
+            _spriteRenderer.sprite = _ingredientsScriptableObject.Graphic;
+        }
+    }
+
+    public void Interact()
+    {
+        Debug.Log($"Interacted with {_ingredientsScriptableObject.Name}");
     }
 }

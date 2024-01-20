@@ -14,9 +14,16 @@ public class PlayerControl : MonoBehaviour
     private Rigidbody2D _playerRb;
 
     private Vector2 _moveInput;
+    private Vector2 _lastMoveInput;
 
-    [Header("Movement")]
+    private RaycastHit2D _raycastHit;
+
+    [Header("Character Settings")]
     [SerializeField] private float _moveSpeed = 2;
+    [SerializeField] private float interactDistance = 0.2f;
+
+    [Header("")]
+    [SerializeField] private LayerMask interactLayer;
 
     private void Awake()
     {
@@ -27,17 +34,46 @@ public class PlayerControl : MonoBehaviour
         _playerInput.actions["Move"].performed += ctx =>
         {
             _moveInput = ctx.ReadValue<Vector2>();
+            _lastMoveInput = _moveInput;
         };
         _playerInput.actions["Move"].canceled += ctx =>
         {
             _moveInput = ctx.ReadValue<Vector2>();
         };
+        _playerInput.actions["Interact"].performed += ctx =>
+        {
+            Interact();
+        };
     }
 
     private void Update()
     {
-        var moveValue = _moveInput * _moveSpeed;
+        Move();
+        CheckInteract();
+    }
 
+    private void Move()
+    {
+        var moveValue = _moveInput * _moveSpeed;
         _playerRb.velocity = moveValue;
+    }
+
+    private void CheckInteract()
+    {
+        Debug.Log(_lastMoveInput);
+        _raycastHit = Physics2D.Raycast(transform.position, _lastMoveInput, interactDistance, interactLayer);
+        Debug.DrawRay(transform.position, _lastMoveInput * 100, Color.red);
+    }
+
+    private void Interact()
+    {
+        if (_raycastHit.collider != null)
+        {
+            var interactable = _raycastHit.collider.GetComponent<IInteractable>();
+            if (interactable != null)
+            {
+                interactable.Interact();
+            }
+        }
     }
 }
