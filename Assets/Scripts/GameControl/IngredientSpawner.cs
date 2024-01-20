@@ -36,7 +36,9 @@ public class IngredientSpawner : MonoBehaviour
         var spawnLocation = new Vector2(randomX, randomY);
         var spawnCell = _colliderTilemap.WorldToCell(spawnLocation);
 
-        if (_colliderTilemap.HasTile(spawnCell))
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(spawnLocation, new Vector2(0.2f, 0.2f), 0f);
+
+        if (_colliderTilemap.HasTile(spawnCell) || colliders.Length > 0)
         {
             SpawnIngredient(ingredient);
         } else

@@ -66,6 +66,7 @@ public class GameController : MonoBehaviour
         if (_secondsPassed >= 10)
         {
             _witch.AddToIngredientQueue(RandomIngredient());
+            _ingredientsRequested++;
             _secondsPassed -= 10;
         }
     }
