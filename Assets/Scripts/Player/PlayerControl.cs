@@ -9,35 +9,71 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(BoxCollider2D))]
 public class PlayerControl : MonoBehaviour
 {
-    private PlayerInput playerInput;
-    private BoxCollider2D boxCollider2d;
-    private Rigidbody2D playerRb;
+    private PlayerInput _playerInput;
+    private BoxCollider2D _boxCollider2d;
+    private Rigidbody2D _playerRb;
 
-    private Vector2 moveInput;
+    private Vector2 _moveInput;
+    private Vector2 _lastMoveInput;
 
-    [Header("Movement")]
-    [SerializeField] private float moveSpeed = 2;
+    private RaycastHit2D _raycastHit;
+
+    [Header("Character Settings")]
+    [SerializeField] private float _moveSpeed = 2;
+    [SerializeField] private float interactDistance = 0.2f;
+
+    [Header("")]
+    [SerializeField] private LayerMask interactLayer;
 
     private void Awake()
     {
-        playerInput = GetComponent<PlayerInput>();
-        boxCollider2d = GetComponent<BoxCollider2D>();
-        playerRb = GetComponent<Rigidbody2D>();
+        _playerInput = GetComponent<PlayerInput>();
+        _boxCollider2d = GetComponent<BoxCollider2D>();
+        _playerRb = GetComponent<Rigidbody2D>();
 
-        playerInput.actions["Move"].performed += ctx =>
+        _playerInput.actions["Move"].performed += ctx =>
         {
-            moveInput = ctx.ReadValue<Vector2>();
+            _moveInput = ctx.ReadValue<Vector2>();
+            _lastMoveInput = _moveInput;
         };
-        playerInput.actions["Move"].canceled += ctx =>
+        _playerInput.actions["Move"].canceled += ctx =>
         {
-            moveInput = ctx.ReadValue<Vector2>();
+            _moveInput = ctx.ReadValue<Vector2>();
+        };
+        _playerInput.actions["Interact"].performed += ctx =>
+        {
+            Interact();
         };
     }
 
     private void Update()
     {
-        var moveValue = moveInput * moveSpeed;
+        Move();
+        CheckInteract();
+    }
 
-        playerRb.velocity = moveValue;
+    private void Move()
+    {
+        var moveValue = _moveInput * _moveSpeed;
+        _playerRb.velocity = moveValue;
+    }
+
+    private void CheckInteract()
+    {
+        Debug.Log(_lastMoveInput);
+        _raycastHit = Physics2D.Raycast(transform.position, _lastMoveInput, interactDistance, interactLayer);
+        Debug.DrawRay(transform.position, _lastMoveInput * 100, Color.red);
+    }
+
+    private void Interact()
+    {
+        if (_raycastHit.collider != null)
+        {
+            var interactable = _raycastHit.collider.GetComponent<IInteractable>();
+            if (interactable != null)
+            {
+                interactable.Interact();
+            }
+        }
     }
 }
