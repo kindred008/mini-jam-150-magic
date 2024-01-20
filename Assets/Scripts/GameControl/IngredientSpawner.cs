@@ -11,6 +11,7 @@ public class IngredientSpawner : MonoBehaviour
     private float bottomBound;
 
     [SerializeField] Tilemap _groundTilemap;
+    [SerializeField] Tilemap _colliderTilemap;
 
     private void Start()
     {
@@ -33,7 +34,14 @@ public class IngredientSpawner : MonoBehaviour
         var randomY = Random.Range(topBound - 1, bottomBound + 1);
 
         var spawnLocation = new Vector2(randomX, randomY);
+        var spawnCell = _colliderTilemap.WorldToCell(spawnLocation);
 
-        Instantiate(ingredient.Prefab, spawnLocation, Quaternion.identity);
+        if (_colliderTilemap.HasTile(spawnCell))
+        {
+            SpawnIngredient(ingredient);
+        } else
+        {
+            Instantiate(ingredient.Prefab, spawnLocation, Quaternion.identity);
+        }
     }
 }

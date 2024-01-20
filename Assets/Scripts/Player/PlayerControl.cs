@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Transactions;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -71,6 +72,12 @@ public class PlayerControl : MonoBehaviour
             if (interactable != null)
             {
                 interactable.Interact();
+            }
+
+            var witch = _raycastHit.collider.GetComponent<Witch>();
+            if (witch != null)
+            {
+                Debug.Log("Hello witch");
             }
         }
     }
