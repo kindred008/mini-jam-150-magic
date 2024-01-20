@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,7 +9,7 @@ public class Witch : MonoBehaviour
 {
     private SpriteRenderer _spriteRenderer;
 
-    private Queue<IngredientsScriptableObject> _ingredientQueue = new Queue<IngredientsScriptableObject>();
+    private List<IngredientsScriptableObject> _ingredientList = new List<IngredientsScriptableObject>();
     private int _maxIngredientQueue;
 
     [SerializeField]
@@ -17,9 +18,9 @@ public class Witch : MonoBehaviour
     public UnityEvent IngredientQueueFull = new UnityEvent();
     public UnityEvent<IngredientsScriptableObject> IngredientHandedIn = new UnityEvent<IngredientsScriptableObject>();
 
-    public Queue<IngredientsScriptableObject> IngredientQueue
+    public List<IngredientsScriptableObject> IngredientList
     {
-        get => _ingredientQueue;
+        get => _ingredientList;
     }
 
     private void Awake()
@@ -31,33 +32,35 @@ public class Witch : MonoBehaviour
 
     private void Start()
     {
-        ChangeEmotion(_ingredientQueue.Count);
+        ChangeEmotion(_ingredientList.Count);
     }
 
     public void AddToIngredientQueue(IngredientsScriptableObject ingredient)
     {
-        if (_ingredientQueue.Count + 1 > _maxIngredientQueue)
+        if (_ingredientList.Count + 1 > _maxIngredientQueue)
         {
             IngredientQueueFull.Invoke();
         } else
         {
-            _ingredientQueue.Enqueue(ingredient);
-            Debug.Log("The witch wants " + ingredient.name);
+            _ingredientList.Add(ingredient);
 
-            ChangeEmotion(_ingredientQueue.Count - 1);
+            string allIngredients = string.Join(", ", _ingredientList.Select(x => x.name));
+            Debug.Log("The witch wants " + allIngredients);
+
+            ChangeEmotion(_ingredientList.Count - 1);
         }
     }
 
     public bool HandIngredient(IngredientsScriptableObject ingredient)
     {
-        if (_ingredientQueue.Count == 0)
+        if (_ingredientList.Count == 0)
             return false;
 
-        if (ingredient == _ingredientQueue.Peek())
+        if (_ingredientList.Remove(ingredient))
         {
-            IngredientHandedIn.Invoke(_ingredientQueue.Dequeue());
-            Debug.Log("Handed in " + ingredient.Name);
-            ChangeEmotion(_ingredientQueue.Count - 1);
+            IngredientHandedIn.Invoke(ingredient);
+            Debug.Log("Handed in " + ingredient.name);
+            ChangeEmotion(_ingredientList.Count - 1);
 
             return true;
         } else
@@ -65,6 +68,19 @@ public class Witch : MonoBehaviour
             Debug.Log("Wrong ingredient");
             return false;
         }
+
+        /*if (ingredient == _ingredientList.Peek())
+        {
+            IngredientHandedIn.Invoke(_ingredientList.Dequeue());
+            Debug.Log("Handed in " + ingredient.Name);
+            ChangeEmotion(_ingredientList.Count - 1);
+
+            return true;
+        } else
+        {
+            Debug.Log("Wrong ingredient");
+            return false;
+        }*/
     }
 
     private void ChangeEmotion(int spriteIndex)
