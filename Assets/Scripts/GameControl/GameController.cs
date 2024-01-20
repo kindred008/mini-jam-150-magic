@@ -5,12 +5,14 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     private Timer _timer;
+    private IngredientSpawner _ingredientSpawner;
 
     [SerializeField] private IngredientsScriptableObject[] _allIngredients;
 
     private void Awake()
     {
         _timer = new Timer(1.0f);
+        _ingredientSpawner = GetComponent<IngredientSpawner>();
     }
 
     private void OnEnable()
@@ -30,6 +32,6 @@ public class GameController : MonoBehaviour
 
     private void HandleSecondPassed()
     {
-        Debug.Log("A new second has passed");
+        
     }
 }
