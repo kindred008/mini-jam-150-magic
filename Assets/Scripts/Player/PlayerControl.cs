@@ -13,6 +13,8 @@ public class PlayerControl : MonoBehaviour
     private PlayerInput _playerInput;
     private BoxCollider2D _boxCollider2d;
     private Rigidbody2D _playerRb;
+    private Animator _playerAnimator;
+    private SpriteRenderer _playerSpriteRenderer;
 
     private Vector2 _moveInput;
     private Vector2 _lastMoveInput;
@@ -22,24 +24,28 @@ public class PlayerControl : MonoBehaviour
 
     [Header("Character Settings")]
     [SerializeField] private float _moveSpeed = 2;
-    [SerializeField] private float interactDistance = 0.2f;
+    [SerializeField] private float _interactDistance = 0.2f;
 
     [Header("")]
-    [SerializeField] private LayerMask interactLayer;
+    [SerializeField] private LayerMask _interactLayer;
 
     private void Awake()
     {
         _playerInput = GetComponent<PlayerInput>();
         _boxCollider2d = GetComponent<BoxCollider2D>();
         _playerRb = GetComponent<Rigidbody2D>();
+        _playerAnimator = GetComponent<Animator>();
+        _playerSpriteRenderer = GetComponent<SpriteRenderer>();
 
         _playerInput.actions["Move"].performed += ctx =>
         {
+            _playerAnimator.SetBool("Moving", true);
             _moveInput = ctx.ReadValue<Vector2>();
             _lastMoveInput = _moveInput;
         };
         _playerInput.actions["Move"].canceled += ctx =>
         {
+            _playerAnimator.SetBool("Moving", false);
             _moveInput = ctx.ReadValue<Vector2>();
         };
         _playerInput.actions["Interact"].performed += ctx =>
@@ -58,15 +64,23 @@ public class PlayerControl : MonoBehaviour
     {
         var moveValue = _moveInput * _moveSpeed;
         _playerRb.velocity = moveValue;
+
+        if (moveValue.x > 0)
+        {
+            _playerSpriteRenderer.flipX = true;
+        } else if (moveValue.x < 0)
+        {
+            _playerSpriteRenderer.flipX = false;
+        }
     }
 
     private void CheckInteract()
     {
         // bool isDiagonal = Mathf.Abs(_lastMoveInput.x) > 0 && Mathf.Abs(_lastMoveInput.y) > 0;
 
-        var interactDistanceFromCenter = (_boxCollider2d.size.x / 2) + interactDistance;
+        var interactDistanceFromCenter = (_boxCollider2d.size.x / 2) + _interactDistance;
 
-        _raycastHit = Physics2D.Raycast(transform.position, _lastMoveInput, interactDistanceFromCenter, interactLayer);
+        _raycastHit = Physics2D.Raycast(transform.position, _lastMoveInput, interactDistanceFromCenter, _interactLayer);
     }
 
     private void Interact()
