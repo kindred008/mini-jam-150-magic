@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5d206d8f1d30242458b84fe3faa3f9d7
+guid: 973b4bd237034a243881dc5e350bde4c
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -121,18 +121,18 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: witch
+  - name: ingredients
     originalName: 
-    pivot: {x: 0.5135135, y: 0}
+    pivot: {x: 0.50793654, y: -1.1666667}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 37
-      height: 62
-    spriteID: 6332c70abfa09784983af9dd02836215
+      width: 63
+      height: 30
+    spriteID: e7e7e9618e8659246a91ea9cc2f799cf
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -144,20 +144,20 @@ ScriptedImporter:
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: 2075730821
-    name: witch
+    guid: 628656894
+    name: ingredients
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: witch
+    - name: ingredients
       frameIndex: 0
       cellRect:
-        x: 13
-        y: 0
-        width: 37
-        height: 62
-      spriteId: 6332c70abfa09784983af9dd02836215
+        x: 0
+        y: 35
+        width: 63
+        height: 30
+      spriteId: e7e7e9618e8659246a91ea9cc2f799cf
     linkedCells: []
     parentIndex: -1
   platformSettings: []
