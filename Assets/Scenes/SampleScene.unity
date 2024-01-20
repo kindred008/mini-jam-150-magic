@@ -1327,6 +1327,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxIngredientQueue: 5
+  _witchEmotions:
+  - {fileID: 1444391964, guid: d3ae1468622dd3d469d7f4f3704dc249, type: 3}
+  - {fileID: -1923168538, guid: d3ae1468622dd3d469d7f4f3704dc249, type: 3}
+  - {fileID: -1518125234, guid: d3ae1468622dd3d469d7f4f3704dc249, type: 3}
+  - {fileID: 1836250575, guid: d3ae1468622dd3d469d7f4f3704dc249, type: 3}
+  - {fileID: 624599158, guid: d3ae1468622dd3d469d7f4f3704dc249, type: 3}
   IngredientQueueFull:
     m_PersistentCalls:
       m_Calls: []
