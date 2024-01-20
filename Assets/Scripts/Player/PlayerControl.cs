@@ -60,9 +60,7 @@ public class PlayerControl : MonoBehaviour
 
     private void CheckInteract()
     {
-        Debug.Log(_lastMoveInput);
         _raycastHit = Physics2D.Raycast(transform.position, _lastMoveInput, interactDistance, interactLayer);
-        Debug.DrawRay(transform.position, _lastMoveInput * 100, Color.red);
     }
 
     private void Interact()
