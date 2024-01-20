@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-[RequireComponent(typeof(BoxCollider2D))]
+[RequireComponent(typeof(CapsuleCollider2D))]
 public class Witch : MonoBehaviour
 {
     private Queue<IngredientsScriptableObject> _ingredientQueue = new Queue<IngredientsScriptableObject>();

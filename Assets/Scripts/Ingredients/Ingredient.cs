@@ -9,7 +9,6 @@ public class Ingredient : MonoBehaviour, IInteractable
     private SpriteRenderer _spriteRenderer;
     private BoxCollider2D _boxCollider;
 
-    [SerializeField]
     private IngredientsScriptableObject _ingredientsScriptableObject;
 
     public IngredientsScriptableObject IngredientsScriptableObject
@@ -25,7 +24,7 @@ public class Ingredient : MonoBehaviour, IInteractable
 
     private void Start()
     {
-        ChangeSprite();
+        //ChangeSprite();
     }
 
     private void ChangeSprite()

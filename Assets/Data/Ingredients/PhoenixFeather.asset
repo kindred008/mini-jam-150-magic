@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 831e3209f07addd46aa5e6abf3e3d7aa, type: 3}
-  m_Name: TestBone
+  m_Name: PhoenixFeather
   m_EditorClassIdentifier: 
-  _id: test02
-  _name: Bone
-  _graphic: {fileID: 21300000, guid: 0779ad3feec52124e97114bcbb12ef13, type: 3}
-  _prefab: {fileID: 9022345213451442161, guid: a317dce71f31dde49b12e268da008caf, type: 3}
+  _id: ingredient03
+  _name: Phoenix Feather
+  _graphic: {fileID: -1314951935, guid: c2e88df57622ffb469bfe87196d79e13, type: 3}
+  _prefab: {fileID: 2378331721504122115, guid: d9b7907275faf404abbb1e6b0e858bbb, type: 3}
