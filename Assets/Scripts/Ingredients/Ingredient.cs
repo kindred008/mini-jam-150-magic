@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
-public class Ingredient : MonoBehaviour, IInteractable
+public class Ingredient : MonoBehaviour
 {
     private SpriteRenderer _spriteRenderer;
     private BoxCollider2D _boxCollider;
@@ -22,11 +22,6 @@ public class Ingredient : MonoBehaviour, IInteractable
         _boxCollider = GetComponent<BoxCollider2D>();
     }
 
-    private void Start()
-    {
-        //ChangeSprite();
-    }
-
     private void ChangeSprite()
     {
         if (_ingredientsScriptableObject.Graphic != null)
@@ -39,10 +34,5 @@ public class Ingredient : MonoBehaviour, IInteractable
     {
         _ingredientsScriptableObject = ingredient;
         ChangeSprite();
-    }
-
-    public void Interact()
-    {
-        Debug.Log($"Interacted with {_ingredientsScriptableObject.Name}");
     }
 }
