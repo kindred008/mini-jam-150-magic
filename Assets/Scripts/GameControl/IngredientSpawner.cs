@@ -28,8 +28,6 @@ public class IngredientSpawner : MonoBehaviour
         rightBound = bounds.center.x + bounds.max.x;
         topBound = bounds.center.y + bounds.max.y;
         bottomBound = bounds.center.y - bounds.max.y;
-
-        Debug.Log(leftBound);
     }
 
     public void SpawnIngredient(IngredientsScriptableObject ingredient)
