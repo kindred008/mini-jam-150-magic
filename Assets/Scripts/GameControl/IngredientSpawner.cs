@@ -13,7 +13,9 @@ public class IngredientSpawner : MonoBehaviour
     [SerializeField] Tilemap _groundTilemap;
     [SerializeField] Tilemap _colliderTilemap;
 
-    private void Start()
+    [SerializeField] GameObject _ingredientPrefab;
+
+    private void Awake()
     {
         GetTilemapEdges();
     }
@@ -26,6 +28,8 @@ public class IngredientSpawner : MonoBehaviour
         rightBound = bounds.center.x + bounds.max.x;
         topBound = bounds.center.y + bounds.max.y;
         bottomBound = bounds.center.y - bounds.max.y;
+
+        Debug.Log(leftBound);
     }
 
     public void SpawnIngredient(IngredientsScriptableObject ingredient)
@@ -43,7 +47,8 @@ public class IngredientSpawner : MonoBehaviour
             SpawnIngredient(ingredient);
         } else
         {
-            Instantiate(ingredient.Prefab, spawnLocation, Quaternion.identity);
+            var spawnedIngredient = Instantiate(_ingredientPrefab, spawnLocation, Quaternion.identity);
+            spawnedIngredient.GetComponent<Ingredient>().ChangeIngredient(ingredient);
         }
     }
 }

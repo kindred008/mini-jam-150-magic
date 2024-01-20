@@ -1767,8 +1767,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _allIngredients:
-  - {fileID: 11400000, guid: 69bdffd68ae57164a85cab9edce57c23, type: 2}
-  - {fileID: 11400000, guid: f51c49bc425138d45b048ea4a8a74f4d, type: 2}
+  - {fileID: 11400000, guid: f284db3467dbd914fab365383325cdf2, type: 2}
+  - {fileID: 11400000, guid: 9ae217b7bcb6d2041a4a77a8e6354bf0, type: 2}
+  - {fileID: 11400000, guid: 981b395cbe5ecf44bbaeae3c0f48b09a, type: 2}
+  - {fileID: 11400000, guid: f2ebb567a9baa2749bb404a83b2854ff, type: 2}
+  - {fileID: 11400000, guid: aa68c75250c6771468a48f67a2f5d2bf, type: 2}
+  - {fileID: 11400000, guid: cf0c8b37684f5174ab9469b0ebc0c6bb, type: 2}
   _witch: {fileID: 95286270}
 --- !u!4 &1075834830
 Transform:
@@ -1799,6 +1803,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _groundTilemap: {fileID: 675046388}
   _colliderTilemap: {fileID: 4437586}
+  _ingredientPrefab: {fileID: 2378331721504122115, guid: d9b7907275faf404abbb1e6b0e858bbb, type: 3}
 --- !u!1 &1477883871
 GameObject:
   m_ObjectHideFlags: 0
