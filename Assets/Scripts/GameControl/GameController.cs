@@ -11,10 +11,18 @@ public class GameController : MonoBehaviour
     private int _ingredientsRequested = 0;
     private int _secondsPassed = -1;
 
+    [Header("Config")]
+    [SerializeField] private int _secondsForFirstRequest = 5;
+    [SerializeField] private int _secondsForEachRequest = 15;
+    [SerializeField] private int _itemsTillDifficultyIncrease = 5;
+    [SerializeField] private int _secondsQuickerEachDifficulty = 1;
+
+    [Header("References")]
     [SerializeField] private IngredientsScriptableObject[] _allIngredients;
     [SerializeField] private Witch _witch;
     private void Awake()
     {
+        _secondsPassed = _secondsForEachRequest - _secondsForFirstRequest;
         _timer = new Timer(1.0f);
         _ingredientSpawner = GetComponent<IngredientSpawner>();
     }
@@ -63,11 +71,11 @@ public class GameController : MonoBehaviour
             _ingredientSpawner.SpawnIngredient(RandomIngredient());
         }*/
 
-        if (_secondsPassed >= 10)
+        if (_secondsPassed >= _secondsForEachRequest)
         {
             _witch.AddToIngredientQueue(RandomIngredient());
             _ingredientsRequested++;
-            _secondsPassed -= 10;
+            _secondsPassed -= _secondsForEachRequest;
         }
     }
 
@@ -80,6 +88,12 @@ public class GameController : MonoBehaviour
     private void HandleIngredientHandedIn(IngredientsScriptableObject ingredient)
     {
         _score += 1;
+
+        if (_score % _itemsTillDifficultyIncrease == 0)
+        {
+            _secondsForEachRequest -= _secondsQuickerEachDifficulty;
+            Debug.Log("Getting harder");
+        }
 
         _ingredientSpawner.SpawnIngredient(ingredient);
     }

@@ -57,6 +57,8 @@ public class Witch : MonoBehaviour
         {
             IngredientHandedIn.Invoke(_ingredientQueue.Dequeue());
             Debug.Log("Handed in " + ingredient.Name);
+            ChangeEmotion(_ingredientQueue.Count - 1);
+
             return true;
         } else
         {
@@ -67,6 +69,7 @@ public class Witch : MonoBehaviour
 
     private void ChangeEmotion(int spriteIndex)
     {
-        _spriteRenderer.sprite = _witchEmotions[spriteIndex];
+        if (spriteIndex >= 0)
+            _spriteRenderer.sprite = _witchEmotions[spriteIndex];
     }
 }

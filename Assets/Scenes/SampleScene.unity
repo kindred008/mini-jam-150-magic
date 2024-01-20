@@ -1326,7 +1326,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97a33211543c7ce4aa8aa3cfd441808b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxIngredientQueue: 5
   _witchEmotions:
   - {fileID: 1444391964, guid: d3ae1468622dd3d469d7f4f3704dc249, type: 3}
   - {fileID: -1923168538, guid: d3ae1468622dd3d469d7f4f3704dc249, type: 3}
@@ -2407,6 +2406,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 882b9f9f0bb688748b791b335c8016ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _secondsForFirstRequest: 5
+  _secondsForEachRequest: 15
+  _itemsTillDifficultyIncrease: 5
+  _secondsQuickerEachDifficulty: 1
   _allIngredients:
   - {fileID: 11400000, guid: f284db3467dbd914fab365383325cdf2, type: 2}
   - {fileID: 11400000, guid: 9ae217b7bcb6d2041a4a77a8e6354bf0, type: 2}
