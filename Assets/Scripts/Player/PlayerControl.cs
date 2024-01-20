@@ -61,7 +61,11 @@ public class PlayerControl : MonoBehaviour
 
     private void CheckInteract()
     {
-        _raycastHit = Physics2D.Raycast(transform.position, _lastMoveInput, interactDistance, interactLayer);
+        // bool isDiagonal = Mathf.Abs(_lastMoveInput.x) > 0 && Mathf.Abs(_lastMoveInput.y) > 0;
+
+        var interactDistanceFromCenter = (_boxCollider2d.size.x / 2) + interactDistance;
+
+        _raycastHit = Physics2D.Raycast(transform.position, _lastMoveInput, interactDistanceFromCenter, interactLayer);
     }
 
     private void Interact()
