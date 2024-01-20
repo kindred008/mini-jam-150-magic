@@ -11,7 +11,6 @@ public class GameController : MonoBehaviour
     private int _ingredientsRequested = 0;
     private int _secondsPassed = -1;
 
-
     [SerializeField] private IngredientsScriptableObject[] _allIngredients;
     [SerializeField] private Witch _witch;
     private void Awake()
@@ -41,15 +40,24 @@ public class GameController : MonoBehaviour
         _timer.Update(Time.deltaTime);
     }
 
+    private IngredientsScriptableObject RandomIngredient()
+    {
+        var randomIndex = Random.Range(0, _allIngredients.Length);
+        return _allIngredients[randomIndex];
+    }
+
     private void HandleSecondPassed()
     {
         _secondsPassed++;
 
+        if (_secondsPassed == 5 || _secondsPassed == 10)
+        {
+            _ingredientSpawner.SpawnIngredient(RandomIngredient());
+        }
+
         if (_secondsPassed >= 10)
         {
-            var randomIndex = Random.Range(0, _allIngredients.Length);
-            _ingredientSpawner.SpawnIngredient(_allIngredients[randomIndex]);
-
+            _witch.AddToIngredientQueue(RandomIngredient());
             _secondsPassed -= 10;
         }
     }
@@ -62,5 +70,7 @@ public class GameController : MonoBehaviour
     private void HandleIngredientHandedIn(IngredientsScriptableObject ingredient)
     {
         _score += 1;
+
+        _ingredientSpawner.SpawnIngredient(ingredient);
     }
 }

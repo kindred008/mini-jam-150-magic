@@ -30,4 +30,21 @@ public class Witch : MonoBehaviour
             Debug.Log("The witch wants " + ingredient.name);
         }
     }
+
+    public bool HandIngredient(IngredientsScriptableObject ingredient)
+    {
+        if (_ingredientQueue.Count == 0)
+            return false;
+
+        if (ingredient == _ingredientQueue.Peek())
+        {
+            IngredientHandedIn.Invoke(_ingredientQueue.Dequeue());
+            Debug.Log("Handed in " + ingredient.name);
+            return true;
+        } else
+        {
+            Debug.Log("Wrong ingredient");
+            return false;
+        }
+    }
 }

@@ -16,8 +16,9 @@ public class PlayerControl : MonoBehaviour
 
     private Vector2 _moveInput;
     private Vector2 _lastMoveInput;
-
     private RaycastHit2D _raycastHit;
+
+    private IngredientsScriptableObject _currentIngredient = null;
 
     [Header("Character Settings")]
     [SerializeField] private float _moveSpeed = 2;
@@ -72,16 +73,28 @@ public class PlayerControl : MonoBehaviour
     {
         if (_raycastHit.collider != null)
         {
-            var interactable = _raycastHit.collider.GetComponent<IInteractable>();
-            if (interactable != null)
+            var ingredient = _raycastHit.collider.GetComponent<Ingredient>();
+            if (ingredient != null)
             {
-                interactable.Interact();
+                if (_currentIngredient == null)
+                {
+                    _currentIngredient = ingredient.IngredientsScriptableObject;
+                    Destroy(ingredient.gameObject);
+                } else
+                {
+                    var newIngredient = ingredient.IngredientsScriptableObject;
+                    ingredient.ChangeIngredient(_currentIngredient);
+                    _currentIngredient = newIngredient;
+                }
             }
 
             var witch = _raycastHit.collider.GetComponent<Witch>();
             if (witch != null)
             {
-                Debug.Log("Hello witch");
+                if (witch.HandIngredient(_currentIngredient)) 
+                {
+                    _currentIngredient = null;
+                }
             }
         }
     }
