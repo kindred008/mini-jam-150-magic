@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 831e3209f07addd46aa5e6abf3e3d7aa, type: 3}
+  m_Name: TestBone
+  m_EditorClassIdentifier: 
+  _id: test02
+  _name: Bone
+  _graphic: {fileID: 21300000, guid: 0779ad3feec52124e97114bcbb12ef13, type: 3}
+  _prefab: {fileID: 9022345213451442161, guid: a317dce71f31dde49b12e268da008caf, type: 3}

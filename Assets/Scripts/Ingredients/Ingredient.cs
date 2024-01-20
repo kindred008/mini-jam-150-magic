@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
@@ -11,6 +12,11 @@ public class Ingredient : MonoBehaviour, IInteractable
     [SerializeField]
     private IngredientsScriptableObject _ingredientsScriptableObject;
 
+    public IngredientsScriptableObject IngredientsScriptableObject
+    {
+        get => _ingredientsScriptableObject;
+    }
+
     private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -19,10 +25,21 @@ public class Ingredient : MonoBehaviour, IInteractable
 
     private void Start()
     {
-        if (_spriteRenderer.sprite != null)
+        ChangeSprite();
+    }
+
+    private void ChangeSprite()
+    {
+        if (_ingredientsScriptableObject.Graphic != null)
         {
             _spriteRenderer.sprite = _ingredientsScriptableObject.Graphic;
         }
+    }
+
+    public void ChangeIngredient(IngredientsScriptableObject ingredient)
+    {
+        _ingredientsScriptableObject = ingredient;
+        ChangeSprite();
     }
 
     public void Interact()

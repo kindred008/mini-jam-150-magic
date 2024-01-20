@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Transactions;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,8 +16,9 @@ public class PlayerControl : MonoBehaviour
 
     private Vector2 _moveInput;
     private Vector2 _lastMoveInput;
-
     private RaycastHit2D _raycastHit;
+
+    private IngredientsScriptableObject _currentIngredient = null;
 
     [Header("Character Settings")]
     [SerializeField] private float _moveSpeed = 2;
@@ -60,17 +62,39 @@ public class PlayerControl : MonoBehaviour
 
     private void CheckInteract()
     {
-        _raycastHit = Physics2D.Raycast(transform.position, _lastMoveInput, interactDistance, interactLayer);
+        // bool isDiagonal = Mathf.Abs(_lastMoveInput.x) > 0 && Mathf.Abs(_lastMoveInput.y) > 0;
+
+        var interactDistanceFromCenter = (_boxCollider2d.size.x / 2) + interactDistance;
+
+        _raycastHit = Physics2D.Raycast(transform.position, _lastMoveInput, interactDistanceFromCenter, interactLayer);
     }
 
     private void Interact()
     {
         if (_raycastHit.collider != null)
         {
-            var interactable = _raycastHit.collider.GetComponent<IInteractable>();
-            if (interactable != null)
+            var ingredient = _raycastHit.collider.GetComponent<Ingredient>();
+            if (ingredient != null)
             {
-                interactable.Interact();
+                if (_currentIngredient == null)
+                {
+                    _currentIngredient = ingredient.IngredientsScriptableObject;
+                    Destroy(ingredient.gameObject);
+                } else
+                {
+                    var newIngredient = ingredient.IngredientsScriptableObject;
+                    ingredient.ChangeIngredient(_currentIngredient);
+                    _currentIngredient = newIngredient;
+                }
+            }
+
+            var witch = _raycastHit.collider.GetComponent<Witch>();
+            if (witch != null)
+            {
+                if (witch.HandIngredient(_currentIngredient)) 
+                {
+                    _currentIngredient = null;
+                }
             }
         }
     }
