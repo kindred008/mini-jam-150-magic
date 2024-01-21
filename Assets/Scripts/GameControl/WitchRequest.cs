@@ -6,12 +6,22 @@ using UnityEngine.UI;
 public class WitchRequest : MonoBehaviour
 {
     [SerializeField] private string _middleNameConvention = "Mid";
-
+    
     private List<Transform> _dialogueMids = new List<Transform>();
+
+    [SerializeField] private Transform _dialogueLeft;
+    [SerializeField] private Transform _dialogueRight;
 
     private void Awake()
     {
         GameController.GameOver.AddListener(HandleGameOver);
+        GameController.Pause.AddListener(HandlePaused);
+    }
+
+    private void OnDestroy()
+    {
+        GameController.GameOver.RemoveListener(HandleGameOver);
+        GameController.Pause.RemoveListener(HandlePaused);
     }
 
     private void Start()
@@ -25,37 +35,44 @@ public class WitchRequest : MonoBehaviour
             }
         }
 
-        gameObject.SetActive(false);
+        EnableDialogue(false);
+    }
+
+    private void EnableDialogue(bool enable)
+    {
+        _dialogueLeft.gameObject.SetActive(enable);
+        _dialogueRight.gameObject.SetActive(enable);
     }
 
     public void UpdateRequest(IngredientsScriptableObject[] ingredients)
     {
         var ingredientsCount = ingredients.Length;
-        if (ingredientsCount > 0)
-        {
-            gameObject.SetActive(true);
+        
+        EnableDialogue(ingredientsCount > 0);
 
-            for (int i = 0; i < _dialogueMids.Count; i++)
+        for (int i = 0; i < _dialogueMids.Count; i++)
+        {
+            var dialogueMid = _dialogueMids[i];
+            if (i + 1 <= ingredientsCount)
             {
-                var dialogueMid = _dialogueMids[i];
-                if (i + 1 <= ingredientsCount)
-                {
-                    dialogueMid.gameObject.SetActive(true);
+                dialogueMid.gameObject.SetActive(true);
 
-                    dialogueMid.GetComponent<DialogueSection>().Image.sprite = ingredients[i].Graphic;
-                } else
-                {
-                    dialogueMid.gameObject.SetActive(false);
-                }
+                dialogueMid.GetComponent<DialogueSection>().Image.sprite = ingredients[i].Graphic;
+            } else
+            {
+                dialogueMid.gameObject.SetActive(false);
             }
-        } else
-        {
-            gameObject.SetActive(false);
         }
+        
     }
 
-    public void HandleGameOver()
+    private void HandleGameOver()
     {
         gameObject.SetActive(false);
+    }
+
+    private void HandlePaused(bool paused)
+    {
+        gameObject.SetActive(!paused);
     }
 }

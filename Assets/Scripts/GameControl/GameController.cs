@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour
 {
     public static UnityEvent GameOver { get; private set; } = new UnityEvent();
+    public static UnityEvent<bool> Pause { get; private set; } = new UnityEvent<bool>();
     private bool _gameOver = false;
 
     private Timer _timer;
@@ -28,16 +29,17 @@ public class GameController : MonoBehaviour
     [SerializeField] private IngredientsScriptableObject[] _allIngredients;
     [SerializeField] private Witch _witch;
     [SerializeField] private GameObject _gameOverUI;
-    [SerializeField] private GameObject _menuButtonUI;
-    [SerializeField] private TextMeshProUGUI[] _scoreTextUIs;
+    [SerializeField] private TextMeshProUGUI _gameOverScoreText;
+    [SerializeField] private GameObject gameOverMenuButtonUI;
+    [SerializeField] private GameObject _pauseUI;
+    [SerializeField] private GameObject _pauseMenuButtonUI;
+    [SerializeField] private TextMeshProUGUI _pauseScoreText;
 
     private void Awake()
     {
         _secondsPassed = _secondsForEachRequest - _secondsForFirstRequest;
         _timer = new Timer(1.0f);
         _ingredientSpawner = GetComponent<IngredientSpawner>();
-
-        GameOver.AddListener(HandleGameOver);
     }
 
     private void OnEnable()
@@ -46,6 +48,9 @@ public class GameController : MonoBehaviour
 
         _witch.IngredientQueueFull.AddListener(HandleIngredientQueueFull);
         _witch.IngredientHandedIn.AddListener(HandleIngredientHandedIn);
+
+        GameOver.AddListener(HandleGameOver);
+        Pause.AddListener(HandlePause);
     }
 
     private void OnDisable()
@@ -54,6 +59,9 @@ public class GameController : MonoBehaviour
 
         _witch.IngredientQueueFull.RemoveListener(HandleIngredientQueueFull);
         _witch.IngredientHandedIn.RemoveListener(HandleIngredientHandedIn);
+
+        GameOver.RemoveListener(HandleGameOver);
+        Pause.RemoveListener(HandlePause);
     }
 
     private void Start()
@@ -97,9 +105,6 @@ public class GameController : MonoBehaviour
 
     private void HandleIngredientQueueFull()
     {
-        Debug.Log("Game over");
-        Debug.Log("Score: " + _score);
-
         GameOver.Invoke();
     }
 
@@ -107,18 +112,29 @@ public class GameController : MonoBehaviour
     {
         _gameOver = true;
         _gameOverUI.SetActive(true);
+        _gameOverScoreText.text = "Score: " + _score;
 
-        EventSystem.current.SetSelectedGameObject(_menuButtonUI);
+        EventSystem.current.SetSelectedGameObject(gameOverMenuButtonUI);
+    }
+
+    private void HandlePause(bool paused)
+    {
+        if (paused)
+        {
+            _pauseUI.SetActive(true);
+            _pauseScoreText.text = "Score: " + _score;
+            EventSystem.current.SetSelectedGameObject(_pauseMenuButtonUI);
+            Time.timeScale = 0.0f;
+        } else
+        {
+            _pauseUI.SetActive(false);
+            Time.timeScale = 1.0f;
+        }
     }
 
     private void HandleIngredientHandedIn(IngredientsScriptableObject ingredient)
     {
-        _score += 1;
-
-        foreach (TextMeshProUGUI scoreText in _scoreTextUIs) 
-        {
-            scoreText.text = "Score: " + _score;
-        }
+        _score ++;
 
         if (_score % _itemsTillDifficultyIncrease == 0)
         {

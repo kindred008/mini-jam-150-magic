@@ -145,17 +145,14 @@ public class PlayerControl : MonoBehaviour
     {
         if (_isPaused)
         {
-            _pauseUI.SetActive(false);
-            Time.timeScale = 1.0f;
             _playerLight.enabled = true;
             _isPaused = false;
+            GameController.Pause.Invoke(false);
         } else
         {
-            _pauseUI.SetActive(true);
-            EventSystem.current.SetSelectedGameObject(_pauseMenuButtonUI);
-            Time.timeScale = 0.0f;
             _playerLight.enabled = false;
             _isPaused = true;
+            GameController.Pause.Invoke(true);
         }
     }
 
