@@ -114,6 +114,7 @@ public class GameController : MonoBehaviour
         _gameOverUI.SetActive(true);
         _gameOverScoreText.text = "Score: " + _score;
 
+        EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(gameOverMenuButtonUI);
     }
 
@@ -123,6 +124,7 @@ public class GameController : MonoBehaviour
         {
             _pauseUI.SetActive(true);
             _pauseScoreText.text = "Score: " + _score;
+            EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(_pauseMenuButtonUI);
             Time.timeScale = 0.0f;
         } else
