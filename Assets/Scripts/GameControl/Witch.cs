@@ -15,6 +15,9 @@ public class Witch : MonoBehaviour
     [SerializeField]
     private SpriteRenderer _witchSpriteRenderer;
 
+    [SerializeField]
+    private WitchRequest _witchRequest;
+
     public UnityEvent IngredientQueueFull { get; private set; } = new UnityEvent();
     public UnityEvent<IngredientsScriptableObject> IngredientHandedIn { get; private set; } = new UnityEvent<IngredientsScriptableObject>();
 
@@ -45,7 +48,7 @@ public class Witch : MonoBehaviour
             string allIngredients = string.Join(", ", _ingredientList.Select(x => x.name));
             Debug.Log("The witch wants " + allIngredients);
 
-            ChangeEmotion(_ingredientList.Count - 1);
+            IngredientListUpdated();
         }
     }
 
@@ -58,7 +61,7 @@ public class Witch : MonoBehaviour
         {
             IngredientHandedIn.Invoke(ingredient);
             Debug.Log("Handed in " + ingredient.name);
-            ChangeEmotion(_ingredientList.Count - 1);
+            IngredientListUpdated();
 
             return true;
         } else
@@ -79,6 +82,12 @@ public class Witch : MonoBehaviour
             Debug.Log("Wrong ingredient");
             return false;
         }*/
+    }
+
+    private void IngredientListUpdated()
+    {
+        ChangeEmotion(_ingredientList.Count - 1);
+        _witchRequest.UpdateRequest(_ingredientList.ToArray());
     }
 
     private void ChangeEmotion(int spriteIndex)
