@@ -3838,8 +3838,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 882b9f9f0bb688748b791b335c8016ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _secondsForFirstRequest: 5
-  _secondsForEachRequest: 12
+  _secondsForFirstRequest: 3
+  _secondsForEachRequest: 10
   _itemsTillDifficultyIncrease: 5
   _secondsQuickerEachDifficulty: 1
   _allIngredients:
