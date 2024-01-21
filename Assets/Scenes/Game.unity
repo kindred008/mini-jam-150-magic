@@ -3840,7 +3840,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _secondsForFirstRequest: 3
   _secondsForEachRequest: 10
-  _itemsTillDifficultyIncrease: 5
+  _itemsTillDifficultyIncrease: 3
   _secondsQuickerEachDifficulty: 1
   _allIngredients:
   - {fileID: 11400000, guid: f284db3467dbd914fab365383325cdf2, type: 2}
