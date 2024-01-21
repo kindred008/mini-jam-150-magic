@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -24,12 +27,17 @@ public class GameController : MonoBehaviour
     [Header("References")]
     [SerializeField] private IngredientsScriptableObject[] _allIngredients;
     [SerializeField] private Witch _witch;
+    [SerializeField] private GameObject _gameOverUI;
+    [SerializeField] private GameObject _menuButtonUI;
+    [SerializeField] private TextMeshProUGUI[] _scoreTextUIs;
 
     private void Awake()
     {
         _secondsPassed = _secondsForEachRequest - _secondsForFirstRequest;
         _timer = new Timer(1.0f);
         _ingredientSpawner = GetComponent<IngredientSpawner>();
+
+        GameOver.AddListener(HandleGameOver);
     }
 
     private void OnEnable()
@@ -92,13 +100,25 @@ public class GameController : MonoBehaviour
         Debug.Log("Game over");
         Debug.Log("Score: " + _score);
 
-        _gameOver = true;
         GameOver.Invoke();
+    }
+
+    private void HandleGameOver()
+    {
+        _gameOver = true;
+        _gameOverUI.SetActive(true);
+
+        EventSystem.current.SetSelectedGameObject(_menuButtonUI);
     }
 
     private void HandleIngredientHandedIn(IngredientsScriptableObject ingredient)
     {
         _score += 1;
+
+        foreach (TextMeshProUGUI scoreText in _scoreTextUIs) 
+        {
+            scoreText.text = "Score: " + _score;
+        }
 
         if (_score % _itemsTillDifficultyIncrease == 0)
         {
@@ -107,5 +127,17 @@ public class GameController : MonoBehaviour
         }
 
         _ingredientSpawner.SpawnIngredient(ingredient);
+    }
+
+    public void Restart()
+    {
+        Time.timeScale = 1.0f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void ReturnToMenu()
+    {
+        Time.timeScale = 1.0f;
+        SceneManager.LoadScene("Menu");
     }
 }

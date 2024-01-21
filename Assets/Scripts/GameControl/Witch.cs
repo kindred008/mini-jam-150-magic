@@ -54,7 +54,9 @@ public class Witch : MonoBehaviour
     public bool HandIngredient(IngredientsScriptableObject ingredient)
     {
         if (_ingredientList.Count == 0)
+        {
             return false;
+        }
 
         if (_ingredientList.Remove(ingredient))
         {

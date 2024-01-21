@@ -9,6 +9,11 @@ public class WitchRequest : MonoBehaviour
 
     private List<Transform> _dialogueMids = new List<Transform>();
 
+    private void Awake()
+    {
+        GameController.GameOver.AddListener(HandleGameOver);
+    }
+
     private void Start()
     {
         for (int i = 0; i < transform.childCount; i++)
@@ -47,5 +52,10 @@ public class WitchRequest : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
+    }
+
+    public void HandleGameOver()
+    {
+        gameObject.SetActive(false);
     }
 }

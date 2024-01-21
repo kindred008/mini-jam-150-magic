@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Transactions;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -16,12 +18,18 @@ public class PlayerControl : MonoBehaviour
     private Rigidbody2D _playerRb;
     private Animator _playerAnimator;
     private SpriteRenderer _playerSpriteRenderer;
+    private Light2D _playerLight;
 
     private Vector2 _moveInput;
     private Vector2 _lastMoveInput;
     private RaycastHit2D _raycastHit;
+    private bool _isPaused;
+    private bool _isGameOver;
 
     private IngredientsScriptableObject _currentIngredient = null;
+
+    [SerializeField] private GameObject _pauseUI;
+    [SerializeField] private GameObject _pauseMenuButtonUI;
 
     public IngredientsScriptableObject CurrentIngredient
     {
@@ -56,32 +64,27 @@ public class PlayerControl : MonoBehaviour
         _playerRb = GetComponent<Rigidbody2D>();
         _playerAnimator = GetComponent<Animator>();
         _playerSpriteRenderer = GetComponent<SpriteRenderer>();
-
-        _playerInput.actions["Move"].performed += ctx =>
-        {
-            _playerAnimator.SetBool("Moving", true);
-            _moveInput = ctx.ReadValue<Vector2>();
-            _lastMoveInput = _moveInput;
-        };
-        _playerInput.actions["Move"].canceled += ctx =>
-        {
-            _playerAnimator.SetBool("Moving", false);
-            _moveInput = ctx.ReadValue<Vector2>();
-        };
-        _playerInput.actions["Interact"].performed += ctx =>
-        {
-            Interact();
-        };
+        _playerLight = GetComponent<Light2D>();
     }
 
     private void OnEnable()
     {
-        GameController.GameOver.AddListener(GameOver);
+        GameController.GameOver.AddListener(HandleGameOver);
+
+        _playerInput.actions["Move"].performed += MovePerformed;
+        _playerInput.actions["Move"].canceled += MoveCanceled;
+        _playerInput.actions["Interact"].performed += InteractPerformed;
+        _playerInput.actions["Pause"].performed += PausePerformed;
     }
 
     private void OnDisable()
     {
-        GameController.GameOver.RemoveListener(GameOver);
+        GameController.GameOver.RemoveListener(HandleGameOver);
+
+        _playerInput.actions["Move"].performed -= MovePerformed;
+        _playerInput.actions["Move"].canceled -= MoveCanceled;
+        _playerInput.actions["Interact"].performed -= InteractPerformed;
+        _playerInput.actions["Pause"].performed -= PausePerformed;
     }
 
     private void Update()
@@ -90,8 +93,77 @@ public class PlayerControl : MonoBehaviour
         CheckInteract();
     }
 
+    private void MovePerformed(InputAction.CallbackContext ctx)
+    {
+        _playerAnimator.SetBool("Moving", true);
+        _moveInput = ctx.ReadValue<Vector2>();
+        _lastMoveInput = _moveInput;
+    }
+
+    private void MoveCanceled(InputAction.CallbackContext ctx)
+    {
+        _playerAnimator.SetBool("Moving", false);
+        _moveInput = ctx.ReadValue<Vector2>();
+    }
+
+    private void InteractPerformed(InputAction.CallbackContext ctx)
+    {
+        if (_isPaused)
+            return;
+
+        if (_raycastHit.collider != null)
+        {
+            var ingredient = _raycastHit.collider.GetComponent<Ingredient>();
+            if (ingredient != null)
+            {
+                if (CurrentIngredient == null)
+                {
+                    CurrentIngredient = ingredient.IngredientsScriptableObject;
+                    Destroy(ingredient.gameObject);
+                }
+                else
+                {
+                    var newIngredient = ingredient.IngredientsScriptableObject;
+                    ingredient.ChangeIngredient(CurrentIngredient);
+
+                    CurrentIngredient = newIngredient;
+                }
+            }
+
+            var witch = _raycastHit.collider.GetComponentInParent<Witch>();
+            if (witch != null)
+            {
+                if (witch.HandIngredient(CurrentIngredient))
+                {
+                    CurrentIngredient = null;
+                }
+            }
+        }
+    }
+
+    private void PausePerformed(InputAction.CallbackContext ctx)
+    {
+        if (_isPaused)
+        {
+            _pauseUI.SetActive(false);
+            Time.timeScale = 1.0f;
+            _playerLight.enabled = true;
+            _isPaused = false;
+        } else
+        {
+            _pauseUI.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(_pauseMenuButtonUI);
+            Time.timeScale = 0.0f;
+            _playerLight.enabled = false;
+            _isPaused = true;
+        }
+    }
+
     private void Move()
     {
+        if (_isPaused)
+            return;
+
         var moveValue = _moveInput * _moveSpeed;
         _playerRb.velocity = moveValue;
 
@@ -113,39 +185,10 @@ public class PlayerControl : MonoBehaviour
         _raycastHit = Physics2D.Raycast(transform.position, _lastMoveInput, interactDistanceFromCenter, _interactLayer);
     }
 
-    private void Interact()
-    {
-        if (_raycastHit.collider != null)
-        {
-            var ingredient = _raycastHit.collider.GetComponent<Ingredient>();
-            if (ingredient != null)
-            {
-                if (CurrentIngredient == null)
-                {
-                    CurrentIngredient = ingredient.IngredientsScriptableObject;
-                    Destroy(ingredient.gameObject);
-                } else
-                {
-                    var newIngredient = ingredient.IngredientsScriptableObject;
-                    ingredient.ChangeIngredient(CurrentIngredient);
-
-                    CurrentIngredient = newIngredient;
-                }
-            }
-
-            var witch = _raycastHit.collider.GetComponentInParent<Witch>();
-            if (witch != null)
-            {
-                if (witch.HandIngredient(CurrentIngredient)) 
-                {
-                    CurrentIngredient = null;
-                }
-            }
-        }
-    }
-
-    private void GameOver()
+    private void HandleGameOver()
     {
         _playerInput.actions.FindActionMap("Player").Disable();
+        _playerLight.enabled = false;
+        CurrentIngredient = null;
     }
 }
