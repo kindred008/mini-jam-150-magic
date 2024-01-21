@@ -6,14 +6,19 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
+[RequireComponent(typeof(AudioSource))]
+[RequireComponent(typeof(IngredientSpawner))]
 public class GameController : MonoBehaviour
 {
     public static UnityEvent GameOver { get; private set; } = new UnityEvent();
     public static UnityEvent<bool> Pause { get; private set; } = new UnityEvent<bool>();
+    public static UnityEvent<AudioClip> PlayClip { get; private set; } = new UnityEvent<AudioClip>();
+
     private bool _gameOver = false;
 
     private Timer _timer;
     private IngredientSpawner _ingredientSpawner;
+    private AudioSource _audioSource;
 
     private int _score = 0;
     private int _ingredientsRequested = 0;
@@ -35,11 +40,15 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject _pauseMenuButtonUI;
     [SerializeField] private TextMeshProUGUI _pauseScoreText;
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip _gameOverClip;
+
     private void Awake()
     {
         _secondsPassed = _secondsForEachRequest - _secondsForFirstRequest;
         _timer = new Timer(1.0f);
         _ingredientSpawner = GetComponent<IngredientSpawner>();
+        _audioSource = GetComponent<AudioSource>();
     }
 
     private void OnEnable()
@@ -51,6 +60,7 @@ public class GameController : MonoBehaviour
 
         GameOver.AddListener(HandleGameOver);
         Pause.AddListener(HandlePause);
+        PlayClip.AddListener(PlaySoundEffect);
     }
 
     private void OnDisable()
@@ -62,10 +72,13 @@ public class GameController : MonoBehaviour
 
         GameOver.RemoveListener(HandleGameOver);
         Pause.RemoveListener(HandlePause);
+        PlayClip.RemoveListener(PlaySoundEffect);
     }
 
     private void Start()
     {
+        _audioSource.volume = GlobalData.EffectsVolume;
+
         foreach(IngredientsScriptableObject ingredient in _allIngredients)
         {
             _ingredientSpawner.SpawnIngredient(ingredient);
@@ -110,11 +123,13 @@ public class GameController : MonoBehaviour
 
     private void HandleGameOver()
     {
+        AudioManager.Instance.PauseAudio();
+        PlayClip.Invoke(_gameOverClip);
+
         _gameOver = true;
         _gameOverUI.SetActive(true);
         _gameOverScoreText.text = "Score: " + _score;
 
-        EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(gameOverMenuButtonUI);
     }
 
@@ -124,7 +139,6 @@ public class GameController : MonoBehaviour
         {
             _pauseUI.SetActive(true);
             _pauseScoreText.text = "Score: " + _score;
-            EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(_pauseMenuButtonUI);
             Time.timeScale = 0.0f;
         } else
@@ -149,13 +163,20 @@ public class GameController : MonoBehaviour
 
     public void Restart()
     {
+        AudioManager.Instance.ResumeAudio();
         Time.timeScale = 1.0f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void ReturnToMenu()
     {
+        AudioManager.Instance.ResumeAudio();
         Time.timeScale = 1.0f;
         SceneManager.LoadScene("Menu");
+    }
+
+    private void PlaySoundEffect(AudioClip clip)
+    {
+        _audioSource.PlayOneShot(clip);
     }
 }

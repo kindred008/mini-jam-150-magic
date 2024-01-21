@@ -9,14 +9,15 @@ public class Witch : MonoBehaviour
     private List<IngredientsScriptableObject> _ingredientList = new List<IngredientsScriptableObject>();
     private int _maxIngredientQueue;
 
-    [SerializeField]
-    private Sprite[] _witchEmotions;
+    [Header("References")]
+    [SerializeField] private Sprite[] _witchEmotions;
+    [SerializeField] private SpriteRenderer _witchSpriteRenderer;
+    [SerializeField] private WitchRequest _witchRequest;
 
-    [SerializeField]
-    private SpriteRenderer _witchSpriteRenderer;
-
-    [SerializeField]
-    private WitchRequest _witchRequest;
+    [Header("AudioClips")]
+    [SerializeField] private AudioClip _happyWitchClip;
+    [SerializeField] private AudioClip _madWitchClip;
+    [SerializeField] private AudioClip _itemDropClip;
 
     public UnityEvent IngredientQueueFull { get; private set; } = new UnityEvent();
     public UnityEvent<IngredientsScriptableObject> IngredientHandedIn { get; private set; } = new UnityEvent<IngredientsScriptableObject>();
@@ -63,9 +64,13 @@ public class Witch : MonoBehaviour
             IngredientHandedIn.Invoke(ingredient);
             IngredientListUpdated();
 
+            GameController.PlayClip.Invoke(_itemDropClip);
+            GameController.PlayClip.Invoke(_happyWitchClip);
+
             return true;
         } else
         {
+            GameController.PlayClip.Invoke(_madWitchClip);
             return false;
         }
 

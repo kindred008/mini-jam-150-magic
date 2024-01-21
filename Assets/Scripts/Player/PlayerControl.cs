@@ -11,6 +11,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(PlayerInput))]
 [RequireComponent(typeof(BoxCollider2D))]
+[RequireComponent(typeof(AudioSource))]
 public class PlayerControl : MonoBehaviour
 {
     private PlayerInput _playerInput;
@@ -19,17 +20,21 @@ public class PlayerControl : MonoBehaviour
     private Animator _playerAnimator;
     private SpriteRenderer _playerSpriteRenderer;
     private Light2D _playerLight;
+    private AudioSource _playerAudioSource;
 
     private Vector2 _moveInput;
     private Vector2 _lastMoveInput;
     private RaycastHit2D _raycastHit;
     private bool _isPaused;
-    private bool _isGameOver;
 
     private IngredientsScriptableObject _currentIngredient = null;
 
+    [Header("References")]
     [SerializeField] private GameObject _pauseUI;
     [SerializeField] private GameObject _pauseMenuButtonUI;
+
+    [Header("Audio Clips")]
+    [SerializeField] private AudioClip _itemPickupClip;
 
     public IngredientsScriptableObject CurrentIngredient
     {
@@ -65,6 +70,9 @@ public class PlayerControl : MonoBehaviour
         _playerAnimator = GetComponent<Animator>();
         _playerSpriteRenderer = GetComponent<SpriteRenderer>();
         _playerLight = GetComponent<Light2D>();
+        _playerAudioSource = GetComponent<AudioSource>();
+
+        _playerAudioSource.volume = GlobalData.EffectsVolume == 0 ? GlobalData.EffectsVolume : GlobalData.EffectsVolume / 4;
     }
 
     private void OnEnable()
@@ -116,6 +124,7 @@ public class PlayerControl : MonoBehaviour
             var ingredient = _raycastHit.collider.GetComponent<Ingredient>();
             if (ingredient != null)
             {
+                GameController.PlayClip.Invoke(_itemPickupClip);
                 if (CurrentIngredient == null)
                 {
                     CurrentIngredient = ingredient.IngredientsScriptableObject;
@@ -184,6 +193,7 @@ public class PlayerControl : MonoBehaviour
 
     private void HandleGameOver()
     {
+        _playerAudioSource.Stop();
         _playerInput.actions.FindActionMap("Player").Disable();
         _playerLight.enabled = false;
         CurrentIngredient = null;

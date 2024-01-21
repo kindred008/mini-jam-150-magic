@@ -4,5 +4,6 @@ using UnityEngine;
 
 public static class GlobalData
 {
-    public static int Volume = 1;
+    public static float EffectsVolume = 0.5f;
+    public static float MusicVolume = 1;
 }
