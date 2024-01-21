@@ -46,7 +46,6 @@ public class Witch : MonoBehaviour
             _ingredientList.Add(ingredient);
 
             string allIngredients = string.Join(", ", _ingredientList.Select(x => x.name));
-            Debug.Log("The witch wants " + allIngredients);
 
             IngredientListUpdated();
         }
@@ -60,13 +59,11 @@ public class Witch : MonoBehaviour
         if (_ingredientList.Remove(ingredient))
         {
             IngredientHandedIn.Invoke(ingredient);
-            Debug.Log("Handed in " + ingredient.name);
             IngredientListUpdated();
 
             return true;
         } else
         {
-            Debug.Log("Wrong ingredient");
             return false;
         }
 

@@ -4,6 +4,7 @@ using System.Transactions;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(PlayerInput))]
@@ -22,12 +23,31 @@ public class PlayerControl : MonoBehaviour
 
     private IngredientsScriptableObject _currentIngredient = null;
 
+    public IngredientsScriptableObject CurrentIngredient
+    {
+        get => _currentIngredient;
+        private set
+        {
+            _currentIngredient = value;
+
+            if (value != null)
+            {
+                _currentIngredientUIImage.sprite = value.Graphic;
+                _currentIngredientUIImage.enabled = true;
+            } else
+            {
+                _currentIngredientUIImage.enabled = false;
+            }
+        }
+    }
+
     [Header("Character Settings")]
     [SerializeField] private float _moveSpeed = 2;
     [SerializeField] private float _interactDistance = 0.2f;
 
-    [Header("")]
+    [Header("References")]
     [SerializeField] private LayerMask _interactLayer;
+    [SerializeField] private Image _currentIngredientUIImage;
 
     private void Awake()
     {
@@ -100,24 +120,25 @@ public class PlayerControl : MonoBehaviour
             var ingredient = _raycastHit.collider.GetComponent<Ingredient>();
             if (ingredient != null)
             {
-                if (_currentIngredient == null)
+                if (CurrentIngredient == null)
                 {
-                    _currentIngredient = ingredient.IngredientsScriptableObject;
+                    CurrentIngredient = ingredient.IngredientsScriptableObject;
                     Destroy(ingredient.gameObject);
                 } else
                 {
                     var newIngredient = ingredient.IngredientsScriptableObject;
-                    ingredient.ChangeIngredient(_currentIngredient);
-                    _currentIngredient = newIngredient;
+                    ingredient.ChangeIngredient(CurrentIngredient);
+
+                    CurrentIngredient = newIngredient;
                 }
             }
 
             var witch = _raycastHit.collider.GetComponentInParent<Witch>();
             if (witch != null)
             {
-                if (witch.HandIngredient(_currentIngredient)) 
+                if (witch.HandIngredient(CurrentIngredient)) 
                 {
-                    _currentIngredient = null;
+                    CurrentIngredient = null;
                 }
             }
         }
