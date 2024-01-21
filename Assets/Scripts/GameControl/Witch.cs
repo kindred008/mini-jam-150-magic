@@ -4,16 +4,16 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
-[RequireComponent(typeof(CapsuleCollider2D))]
 public class Witch : MonoBehaviour
 {
-    private SpriteRenderer _spriteRenderer;
-
     private List<IngredientsScriptableObject> _ingredientList = new List<IngredientsScriptableObject>();
     private int _maxIngredientQueue;
 
     [SerializeField]
     private Sprite[] _witchEmotions;
+
+    [SerializeField]
+    private SpriteRenderer _witchSpriteRenderer;
 
     public UnityEvent IngredientQueueFull { get; private set; } = new UnityEvent();
     public UnityEvent<IngredientsScriptableObject> IngredientHandedIn { get; private set; } = new UnityEvent<IngredientsScriptableObject>();
@@ -25,8 +25,6 @@ public class Witch : MonoBehaviour
 
     private void Awake()
     {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-
         _maxIngredientQueue = _witchEmotions.Length;
     }
 
@@ -86,6 +84,6 @@ public class Witch : MonoBehaviour
     private void ChangeEmotion(int spriteIndex)
     {
         if (spriteIndex >= 0)
-            _spriteRenderer.sprite = _witchEmotions[spriteIndex];
+            _witchSpriteRenderer.sprite = _witchEmotions[spriteIndex];
     }
 }

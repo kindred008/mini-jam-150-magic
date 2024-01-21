@@ -141,6 +141,86 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
+  - name: witch_Frame_1
+    originalName: 
+    pivot: {x: 0.5135135, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 74
+      width: 37
+      height: 62
+    spriteID: 7d68d84ac0c01864e949a6db8b6a11de
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 74}
+  - name: witch_Frame_2
+    originalName: 
+    pivot: {x: 0.5135135, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 144
+      width: 37
+      height: 62
+    spriteID: 641deb2fd1ef13345bc6f98590e7f879
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 144}
+  - name: witch_Frame_3
+    originalName: 
+    pivot: {x: 0.5135135, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 49
+      y: 4
+      width: 37
+      height: 62
+    spriteID: 4b053f67b079838419872eb908ec6b65
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 49, y: 4}
+  - name: witch_Frame_4
+    originalName: 
+    pivot: {x: 0.5135135, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 49
+      y: 74
+      width: 37
+      height: 62
+    spriteID: fcf8946034605bb48b3e397ba87f4e2e
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 49, y: 74}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
@@ -150,7 +230,7 @@ ScriptedImporter:
     layerType: 0
     blendMode: 0
     cells:
-    - name: witch
+    - name: witch_Frame_0
       frameIndex: 0
       cellRect:
         x: 13
@@ -158,6 +238,38 @@ ScriptedImporter:
         width: 37
         height: 62
       spriteId: 6332c70abfa09784983af9dd02836215
+    - name: witch_Frame_1
+      frameIndex: 1
+      cellRect:
+        x: 13
+        y: 0
+        width: 37
+        height: 62
+      spriteId: 7d68d84ac0c01864e949a6db8b6a11de
+    - name: witch_Frame_2
+      frameIndex: 2
+      cellRect:
+        x: 13
+        y: 0
+        width: 37
+        height: 62
+      spriteId: 641deb2fd1ef13345bc6f98590e7f879
+    - name: witch_Frame_3
+      frameIndex: 3
+      cellRect:
+        x: 13
+        y: 0
+        width: 37
+        height: 62
+      spriteId: 4b053f67b079838419872eb908ec6b65
+    - name: witch_Frame_4
+      frameIndex: 4
+      cellRect:
+        x: 13
+        y: 0
+        width: 37
+        height: 62
+      spriteId: fcf8946034605bb48b3e397ba87f4e2e
     linkedCells: []
     parentIndex: -1
   platformSettings: []

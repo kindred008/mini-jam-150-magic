@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 973b4bd237034a243881dc5e350bde4c
+guid: 3644d47c84466004f8b3facaae0c6a32
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -121,7 +121,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: ingredients
+  - name: cauldron
     originalName: 
     pivot: {x: 0.5, y: 0}
     alignment: 9
@@ -131,8 +131,8 @@ ScriptedImporter:
       x: 4
       y: 4
       width: 64
-      height: 32
-    spriteID: e7e7e9618e8659246a91ea9cc2f799cf
+      height: 64
+    spriteID: 87edfc262a623894caaf3fd56be8329e
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -144,24 +144,24 @@ ScriptedImporter:
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: 628656894
-    name: ingredients
+    guid: 974066060
+    name: cauldron
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: ingredients
+    - name: cauldron
       frameIndex: 0
       cellRect:
         x: 0
         y: 0
         width: 64
-        height: 32
-      spriteId: e7e7e9618e8659246a91ea9cc2f799cf
+        height: 64
+      spriteId: 87edfc262a623894caaf3fd56be8329e
     linkedCells: []
     parentIndex: -1
   platformSettings: []
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 64, y: 32}
+  canvasSize: {x: 64, y: 64}

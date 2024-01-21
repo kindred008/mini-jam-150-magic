@@ -112,7 +112,7 @@ public class PlayerControl : MonoBehaviour
                 }
             }
 
-            var witch = _raycastHit.collider.GetComponent<Witch>();
+            var witch = _raycastHit.collider.GetComponentInParent<Witch>();
             if (witch != null)
             {
                 if (witch.HandIngredient(_currentIngredient)) 
