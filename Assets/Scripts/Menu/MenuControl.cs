@@ -7,28 +7,37 @@ using UnityEngine.UI;
 
 public class MenuControl : MonoBehaviour
 {
-    [SerializeField] private Slider _volumeSlider;
+    [SerializeField] private Slider _musicVolumeSlider;
+    [SerializeField] private Slider _effectsVolumeSlider;
     [SerializeField] private GameObject _menuObject;
     [SerializeField] private GameObject _creditsObject;
 
     private void OnEnable()
     {
-        _volumeSlider.onValueChanged.AddListener(ChangeVolume);
+        _musicVolumeSlider.onValueChanged.AddListener(ChangeMusicVolume);
+        _effectsVolumeSlider.onValueChanged.AddListener(ChangeEffectsVolume);
     }
 
     private void OnDisable()
     {
-        _volumeSlider.onValueChanged.RemoveListener(ChangeVolume);
+        _musicVolumeSlider.onValueChanged.RemoveListener(ChangeMusicVolume);
+        _effectsVolumeSlider.onValueChanged.RemoveListener(ChangeEffectsVolume);
     }
 
     private void Start()
     {
-        _volumeSlider.value = AudioManager.Instance.GetVolume();
+        _musicVolumeSlider.value = GlobalData.MusicVolume;
+        _effectsVolumeSlider.value = GlobalData.EffectsVolume;
     }
 
-    private void ChangeVolume(float volume)
+    private void ChangeMusicVolume(float volume)
     {
-        AudioManager.Instance.UpdateVolume(volume);
+        GlobalData.MusicVolume = volume;
+    }
+    
+    private void ChangeEffectsVolume(float volume)
+    {
+        GlobalData.EffectsVolume = volume;
     }
 
     public void NavigateToMainCanvas(GameObject defaultSelect)
