@@ -22,10 +22,9 @@ public class AudioManager : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
     }
 
-    public void UpdateVolume(float newVolume)
+    private void Update()
     {
-        GlobalData.Volume = newVolume;
-        _audioSource.volume = newVolume;
+        _audioSource.volume = GlobalData.MusicVolume;
     }
 
     public float GetVolume()
