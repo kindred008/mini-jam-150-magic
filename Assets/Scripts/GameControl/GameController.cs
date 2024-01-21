@@ -14,6 +14,7 @@ public class GameController : MonoBehaviour
 
     private Timer _timer;
     private IngredientSpawner _ingredientSpawner;
+    private AudioSource _audioSource;
 
     private int _score = 0;
     private int _ingredientsRequested = 0;
@@ -35,11 +36,15 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject _pauseMenuButtonUI;
     [SerializeField] private TextMeshProUGUI _pauseScoreText;
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip _gameOverClip;
+
     private void Awake()
     {
         _secondsPassed = _secondsForEachRequest - _secondsForFirstRequest;
         _timer = new Timer(1.0f);
         _ingredientSpawner = GetComponent<IngredientSpawner>();
+        _audioSource = GetComponent<AudioSource>();
     }
 
     private void OnEnable()
@@ -66,6 +71,8 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
+        _audioSource.volume = GlobalData.Volume;
+
         foreach(IngredientsScriptableObject ingredient in _allIngredients)
         {
             _ingredientSpawner.SpawnIngredient(ingredient);
@@ -110,11 +117,13 @@ public class GameController : MonoBehaviour
 
     private void HandleGameOver()
     {
+        AudioManager.Instance.PauseAudio();
+        _audioSource.PlayOneShot(_gameOverClip);
+
         _gameOver = true;
         _gameOverUI.SetActive(true);
         _gameOverScoreText.text = "Score: " + _score;
 
-        EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(gameOverMenuButtonUI);
     }
 
@@ -124,7 +133,6 @@ public class GameController : MonoBehaviour
         {
             _pauseUI.SetActive(true);
             _pauseScoreText.text = "Score: " + _score;
-            EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(_pauseMenuButtonUI);
             Time.timeScale = 0.0f;
         } else
@@ -149,12 +157,14 @@ public class GameController : MonoBehaviour
 
     public void Restart()
     {
+        AudioManager.Instance.ResumeAudio();
         Time.timeScale = 1.0f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void ReturnToMenu()
     {
+        AudioManager.Instance.ResumeAudio();
         Time.timeScale = 1.0f;
         SceneManager.LoadScene("Menu");
     }

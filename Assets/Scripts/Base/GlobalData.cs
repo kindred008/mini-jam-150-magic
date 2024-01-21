@@ -4,5 +4,5 @@ using UnityEngine;
 
 public static class GlobalData
 {
-    public static int Volume = 1;
+    public static float Volume = 1;
 }
