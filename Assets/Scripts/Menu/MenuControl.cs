@@ -11,6 +11,7 @@ public class MenuControl : MonoBehaviour
     [SerializeField] private Slider _effectsVolumeSlider;
     [SerializeField] private GameObject _menuObject;
     [SerializeField] private GameObject _creditsObject;
+    [SerializeField] private GameObject _controlsObject;
 
     private void OnEnable()
     {
@@ -44,6 +45,7 @@ public class MenuControl : MonoBehaviour
     {
         _menuObject.SetActive(true);
         _creditsObject.SetActive(false);
+        _controlsObject.SetActive(false);
         EventSystem.current.SetSelectedGameObject(defaultSelect);
     }
 
@@ -51,6 +53,15 @@ public class MenuControl : MonoBehaviour
     {
         _menuObject.SetActive(false);
         _creditsObject.SetActive(true);
+        _controlsObject.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(defaultSelect);
+    }
+
+    public void NavigationToControlsCanvas(GameObject defaultSelect)
+    {
+        _menuObject.SetActive(false);
+        _creditsObject.SetActive(false);
+        _controlsObject.SetActive(true);
         EventSystem.current.SetSelectedGameObject(defaultSelect);
     }
 

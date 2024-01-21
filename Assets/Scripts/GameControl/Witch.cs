@@ -56,6 +56,7 @@ public class Witch : MonoBehaviour
     {
         if (_ingredientList.Count == 0)
         {
+            GameController.PlayClip.Invoke(_madWitchClip);
             return false;
         }
 
