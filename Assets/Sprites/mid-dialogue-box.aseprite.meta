@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ddda73395a63038448e4cd482ba6221c
+guid: 3c124f21a0a44354583ed17b6e372763
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -121,18 +121,18 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: dialogue-box-small
+  - name: mid-dialogue-box
     originalName: 
-    pivot: {x: 0.8125, y: 0}
+    pivot: {x: 0.5, y: -0.26923075}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 48
-      height: 33
-    spriteID: 7cd3ba240b3908b48935eb367eaef48b
+      width: 16
+      height: 26
+    spriteID: e99dab44f9932c74896ee75480cdc2c5
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -144,24 +144,24 @@ ScriptedImporter:
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: 1617956682
-    name: dialogue-box-small
+    guid: -235338183
+    name: mid-dialogue-box
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: dialogue-box-small
+    - name: mid-dialogue-box
       frameIndex: 0
       cellRect:
         x: 0
-        y: 0
-        width: 48
-        height: 33
-      spriteId: 7cd3ba240b3908b48935eb367eaef48b
+        y: 7
+        width: 16
+        height: 26
+      spriteId: e99dab44f9932c74896ee75480cdc2c5
     linkedCells: []
     parentIndex: -1
   platformSettings: []
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 78, y: 33}
+  canvasSize: {x: 16, y: 33}
